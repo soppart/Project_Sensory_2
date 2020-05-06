@@ -36,7 +36,7 @@ public class Move2 : MonoBehaviour
         transform.localScale = ballSize;
         GrowSpd = 5f / ballRadius;
         this.gameObject.GetComponent<Rigidbody>().AddForce(0, -80, 0, ForceMode.Acceleration);
-
+        
         //if (constraintStatus == 2)
         //{
         //    rb.constraints = RigidbodyConstraints.None;
@@ -57,7 +57,7 @@ public class Move2 : MonoBehaviour
         {
             rb.drag = 0f;
             rb.constraints = RigidbodyConstraints.FreezeRotation;
-
+            
             if (GetComponent<Rigidbody>().velocity == Vector3.zero)
             {
                 planeStatus = 3;
@@ -69,13 +69,24 @@ public class Move2 : MonoBehaviour
                     Vector3 vel = rb.velocity;
                     vel.z = 0f;
                     rb.velocity = vel;
-                    if (Mathf.Abs(rb.velocity.x) < 12)
+                    if (Mathf.Abs(rb.velocity.x) < 25)
                     {
-                        //rb.velocity.x ++;
+                        vel = rb.velocity;
+                        vel.x *= 1.1f;
+                        rb.velocity = vel;
+                        if (vel.x > 0)
+                        {
+                            vel.x++;
+                        }
+                        if (vel.x < 0)
+                        {
+                            vel.x--;
+                        }
+                        rb.velocity = vel;
                     }
                     if (Mathf.Abs(rb.velocity.x) < 0.5f)
                     {
-                        planeStatus = 3;
+                        //planeStatus = 3;
                     }
                 }
                 else
@@ -83,13 +94,24 @@ public class Move2 : MonoBehaviour
                     Vector3 vel = rb.velocity;
                     vel.x = 0f;
                     rb.velocity = vel;
-                    if (Mathf.Abs(rb.velocity.z) < 12)
+                    if (Mathf.Abs(rb.velocity.z) < 25)
                     {
-                        //rb.velocity.z ++;
+                        vel = rb.velocity;
+                        vel.z *= 1.1f;
+                        if (vel.z > 0)
+                        {
+                            vel.z ++;
+                        }
+                        if (vel.z < 0)
+                        {
+                            vel.z--;
+                        }
+                        
+                        rb.velocity = vel;
                     }
                     if (Mathf.Abs(rb.velocity.z) < 0.5f)
                     {
-                        planeStatus = 3;
+                        //planeStatus = 3;
                     }
                 }
             }
@@ -126,8 +148,9 @@ public class Move2 : MonoBehaviour
         }
         else if (planeStatus == 3)
         {
-            rb.constraints = RigidbodyConstraints.None;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
+            rb.constraints = RigidbodyConstraints.None;
+            
             if (Input.GetKey(KeyCode.W))
             {
                 this.gameObject.GetComponent<Rigidbody>().AddForce(0, 0, boostForce, ForceMode.VelocityChange);
@@ -148,11 +171,9 @@ public class Move2 : MonoBehaviour
                 this.gameObject.GetComponent<Rigidbody>().AddForce(boostForce, 0, 0, ForceMode.VelocityChange);
                 planeStatus = 2;
             }
+            
         }
-        else if (planeStatus == 4)
-        {
-            ballRadius += GrowSpd * Time.deltaTime;
-        }
+        
     }
 
     public void OnTriggerEnter(Collider other)
@@ -166,6 +187,7 @@ public class Move2 : MonoBehaviour
         {
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             planeStatus = 3;
+            Debug.Log("weird");
         }
         
     }
