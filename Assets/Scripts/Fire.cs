@@ -17,8 +17,10 @@ public class Fire : MonoBehaviour
     {
         if(inFireRange == true)
         {
+            if (Move2.ballRadius > 2) { 
             Debug.Log("infire");
             Move2.ballRadius -= 2 * Time.deltaTime;
+            }
         }
     }
 

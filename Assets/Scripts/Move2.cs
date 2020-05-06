@@ -7,6 +7,8 @@ public class Move2 : MonoBehaviour
 {
     public Rigidbody rb;
 
+    public bool grow;
+
     public GameObject ground;
 
     public float planeStatus = 1;
@@ -17,7 +19,7 @@ public class Move2 : MonoBehaviour
     private Vector3 ballPosition = new Vector3(0f, 0f, 0f);
     private Vector3 StartPosition = new Vector3(-100f, 2f, 0f);
 
-    public static float ballRadius = Mathf.Clamp(5f, 2.5f, 12f);
+    public static float ballRadius = Mathf.Clamp(7f, 2.5f, 15f);
     Vector3 ballSize;
     float GrowSpd;
     //float minGlideSpd = Mathf.Clamp(10, 10, 10);
@@ -26,6 +28,7 @@ public class Move2 : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        grow = false;
         
     }
 
@@ -36,7 +39,7 @@ public class Move2 : MonoBehaviour
         transform.localScale = ballSize;
         GrowSpd = 5f / ballRadius;
         this.gameObject.GetComponent<Rigidbody>().AddForce(0, -80, 0, ForceMode.Acceleration);
-        
+
         //if (constraintStatus == 2)
         //{
         //    rb.constraints = RigidbodyConstraints.None;
@@ -48,16 +51,38 @@ public class Move2 : MonoBehaviour
         //    rb.constraints = RigidbodyConstraints.FreezePositionX;
         //}
 
+
+
+        // 
+
+
         if (Input.GetKey(KeyCode.Escape))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
+
+        // detects if the keys are getting pressed, and will grow accordingly 
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            if (grow == true)
+            {
+                if(ballRadius < 12) { 
+                ballRadius += GrowSpd * Time.deltaTime;
+                Debug.Log("enter snow");
+
+                }
+            }
+        }
+
+
+        // plane status 2  ice 
+
         if (planeStatus == 2)
         {
             rb.drag = 0f;
             rb.constraints = RigidbodyConstraints.FreezeRotation;
-            
+
             if (GetComponent<Rigidbody>().velocity == Vector3.zero)
             {
                 planeStatus = 3;
@@ -69,24 +94,13 @@ public class Move2 : MonoBehaviour
                     Vector3 vel = rb.velocity;
                     vel.z = 0f;
                     rb.velocity = vel;
-                    if (Mathf.Abs(rb.velocity.x) < 25)
+                    if (Mathf.Abs(rb.velocity.x) < 12)
                     {
-                        vel = rb.velocity;
-                        vel.x *= 1.1f;
-                        rb.velocity = vel;
-                        if (vel.x > 0)
-                        {
-                            vel.x++;
-                        }
-                        if (vel.x < 0)
-                        {
-                            vel.x--;
-                        }
-                        rb.velocity = vel;
+                        //rb.velocity.x ++;
                     }
                     if (Mathf.Abs(rb.velocity.x) < 0.5f)
                     {
-                        //planeStatus = 3;
+                        planeStatus = 3;
                     }
                 }
                 else
@@ -94,24 +108,13 @@ public class Move2 : MonoBehaviour
                     Vector3 vel = rb.velocity;
                     vel.x = 0f;
                     rb.velocity = vel;
-                    if (Mathf.Abs(rb.velocity.z) < 25)
+                    if (Mathf.Abs(rb.velocity.z) < 12)
                     {
-                        vel = rb.velocity;
-                        vel.z *= 1.1f;
-                        if (vel.z > 0)
-                        {
-                            vel.z ++;
-                        }
-                        if (vel.z < 0)
-                        {
-                            vel.z--;
-                        }
-                        
-                        rb.velocity = vel;
+                        //rb.velocity.z ++;
                     }
                     if (Mathf.Abs(rb.velocity.z) < 0.5f)
                     {
-                        //planeStatus = 3;
+                        planeStatus = 3;
                     }
                 }
             }
@@ -143,14 +146,13 @@ public class Move2 : MonoBehaviour
                     this.gameObject.GetComponent<Rigidbody>().AddForce(pushForce, 0, 0, ForceMode.Acceleration);
                     constraintStatus = 2;
                 }
-                //ballRadius += GrowSpd * Time.deltaTime;
+               
             }
         }
         else if (planeStatus == 3)
         {
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
             rb.constraints = RigidbodyConstraints.None;
-            
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
             if (Input.GetKey(KeyCode.W))
             {
                 this.gameObject.GetComponent<Rigidbody>().AddForce(0, 0, boostForce, ForceMode.VelocityChange);
@@ -171,13 +173,22 @@ public class Move2 : MonoBehaviour
                 this.gameObject.GetComponent<Rigidbody>().AddForce(boostForce, 0, 0, ForceMode.VelocityChange);
                 planeStatus = 2;
             }
-            
         }
-        
+       
     }
 
+
+    public void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "snow")
+        {
+            grow = true;
+        }
+    }
     public void OnTriggerEnter(Collider other)
     {
+        
+
         if (other.tag == "ice")
         {
             Debug.Log("EnterIce");
@@ -187,7 +198,6 @@ public class Move2 : MonoBehaviour
         {
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             planeStatus = 3;
-            Debug.Log("weird");
         }
         
     }
