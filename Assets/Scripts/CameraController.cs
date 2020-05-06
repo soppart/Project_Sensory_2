@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour
     {
         playerPos = player.transform.position;
         camera.transform.position = playerPos + cameraDist;
-        cameraHeight = Mathf.Pow(Move2.ballRadius, 1f) * 6;
-        cameraDist = new Vector3(0f, cameraHeight, 0f);
+        cameraHeight = Mathf.Pow(Move2.ballRadius, 1f) * 8;
+        cameraDist = new Vector3(0f, cameraHeight, -20f);
     }
 }

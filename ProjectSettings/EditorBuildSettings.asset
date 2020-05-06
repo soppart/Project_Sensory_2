@@ -15,15 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/HD Level 2.unity
     guid: fbfd1907b8bfe49f99115952ca1d916f
   - enabled: 1
-    path: Assets/Scenes/HD Level 3 Placeholder.unity
-    guid: 8b058d3e020c6434fa6066436fe49df0
-  - enabled: 1
     path: Assets/Scenes/HD Level 4.unity
     guid: 8d2b27c3121ab1f49809d8f46f3bc71a
   - enabled: 1
     path: Assets/Scenes/EndingMenu.unity
     guid: 242d3e900d2559f47b7688ff099fb8dd
-  - enabled: 1
-    path: Assets/Scenes/MechanicsTest.unity
-    guid: cd72721b93d4d95488f4f56e6347139d
   m_configObjects: {}
