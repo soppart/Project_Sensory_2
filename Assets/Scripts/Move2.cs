@@ -19,12 +19,17 @@ public class Move2 : MonoBehaviour
     private Vector3 ballPosition = new Vector3(0f, 0f, 0f);
     private Vector3 StartPosition = new Vector3(-100f, 2f, 0f);
 
-    public static float ballRadius = Mathf.Clamp(4f, 2.5f, 15f);
+    public static float ballRadius;
     Vector3 ballSize;
     float GrowSpd;
     //float minGlideSpd = Mathf.Clamp(10, 10, 10);
 
     // Start is called before the first frame update
+    void Awake()
+    {
+        ballRadius = Mathf.Clamp(4f, 2.5f, 15f);
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();

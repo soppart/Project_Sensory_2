@@ -14,39 +14,21 @@ public class GameController1 : MonoBehaviour
     bool lvlChange;
     int index;
 
-    //sound stuff
-
-    //https://answers.unity.com/questions/1335036/change-audio-clip-through-code.html
-    // github.com/prismspecs/Virtual-Environments/blob/master/Universal%20RP%20Demos/Assets/Sound/Crossfade%20Songs/Crossfade.cs
-    public AudioSource[] audio;
-    public AudioClip[] clips;
-    int trackNumber;
-
     // Start is called before the first frame update
     void Start()
     {
         // scene manager
         DontDestroyOnLoad(this.gameObject);
-        //index = SceneManager.GetActiveScene().buildIndex;
-        trackNumber = 0;
-                   
+                         
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        //testing
-        if (Input.GetKeyDown("space")) {
-            index += 1;
-            SceneManager.LoadScene(index);
-        }
-
-
-        player = GameObject.FindGameObjectWithTag("player");
-
-
-       
+        
+         player = GameObject.FindGameObjectWithTag("player");
+               
     }
 
     public void play() {
